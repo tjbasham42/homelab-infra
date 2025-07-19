@@ -45,3 +45,18 @@ variable "vm_cores" {
   description = "Number of CPU cores"
   type        = number
 }
+
+variable "vm_configs" {
+  type = map(object({
+    name       = string
+    node       = string
+    started    = bool
+    clone_id   = number
+    memory     = number
+    cores      = number
+    bridge     = string
+    nic_model  = string
+    user       = string
+    password   = string
+  }))
+}

@@ -28,27 +28,39 @@ provider "proxmox" {
 }
 
 
-resource "proxmox_virtual_environment_vm" "ubuntu_clone" {
-  count     = 1
-  name      = "ubuntu-clone-${count.index + 1}"
-  node_name = var.target_node
-  started     = false
+resource "proxmox_virtual_environment_vm" "vms" {
+  for_each  = var.vm_configs
+  name      = each.value.name
+  node_name = each.value.node
+  started   = each.value.started
 
   clone {
-    vm_id = 900
-  }
-
-  agent {
-    # NOTE: The agent is installed and enabled as part of the cloud-init configuration in the template VM, see cloud-config.tf
-    # The working agent is *required* to retrieve the VM IP addresses.
-    # If you are using a different cloud-init configuration, or a different clone source
-    # that does not have the qemu-guest-agent installed, you may need to disable the `agent` below and remove the `vm_ipv4_address` output.
-    # See https://registry.terraform.io/providers/bpg/proxmox/latest/docs/resources/virtual_environment_vm#qemu-guest-agent for more details.
-    enabled = true
+    vm_id = each.value.clone_id
   }
 
   memory {
-    dedicated = 768
+    dedicated = each.value.memory
   }
 
+  cpu {
+    cores = each.value.cores
+  }
+
+  network_device {
+    bridge = each.value.bridge
+    model  = each.value.nic_model
+  }
+
+  initialization {
+    user_account {
+      username = each.value.user
+      password = each.value.password
+    }
+
+    ip_config {
+      ipv4 {
+        address = "dhcp"
+      }
+    }
+  }
 }
