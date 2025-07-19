@@ -1,0 +1,10 @@
+*.tfstate
+*.tfstate.backup
+.terraform/
+secrets/
+*.retry
+*.log
+*.pem
+*.key
+*.crt
+vault.yml
