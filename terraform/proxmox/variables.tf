@@ -46,6 +46,12 @@ variable "vm_cores" {
   type        = number
 }
 
+variable "ansiblekey_pub" {
+  description = "public key for the ansibleusr"
+  sensitive   = true
+  type        = string
+}
+
 variable "vm_configs" {
   type = map(object({
     name       = string
