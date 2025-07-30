@@ -56,6 +56,7 @@ variable "vm_configs" {
     cores      = number
     bridge     = string
     nic_model  = string
+    ipv4conf   = string
     user       = string
     password   = string
   }))

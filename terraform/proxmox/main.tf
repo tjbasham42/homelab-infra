@@ -27,7 +27,6 @@ provider "proxmox" {
   }
 }
 
-
 resource "proxmox_virtual_environment_vm" "vms" {
   for_each  = var.vm_configs
   name      = each.value.name
@@ -59,7 +58,7 @@ resource "proxmox_virtual_environment_vm" "vms" {
 
     ip_config {
       ipv4 {
-        address = "dhcp"
+        address = each.value.ipv4conf
       }
     }
   }
