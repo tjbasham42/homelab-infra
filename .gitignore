@@ -8,3 +8,7 @@ secrets/
 *.key
 *.crt
 vault.yml
+packer/proxmox-ubuntu2404/variables.auto.pkrvars.hcl
+terraform/homelab.tfvars
+ansible/ansiblekey
+terraform/proxmox/.terraform.lock.hcl
