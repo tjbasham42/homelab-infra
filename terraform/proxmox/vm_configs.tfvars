@@ -9,7 +9,7 @@ vm_configs = {
     bridge    = "vmbr0"
     nic_model = "virtio"
     ipv4conf  = "dhcp"
-    user      = "webadmin"
+    user      = "ansibleusr"
     password  = "changeme"
   }
 
@@ -23,8 +23,8 @@ vm_configs = {
     bridge    = "vmbr0"
     nic_model = "virtio"
     ipv4conf  = "dhcp"
-    user      = "dbadmin"
-    password  = "secret"
+    user      = "ansibleusr"
+    password  = "changeme"
   }
 
     "docker01" = {
@@ -36,8 +36,8 @@ vm_configs = {
     cores     = 2
     bridge    = "vmbr0"
     nic_model = "virtio"
-    ipv4conf  = "192.168.2.1/32"
-    user      = "dockeradmin"
-    password  = "secret"
+    ipv4conf  = "192.168.2.1/16"
+    user      = "ansibleusr"
+    password  = "changeme"
   }
 }

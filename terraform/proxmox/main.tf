@@ -54,6 +54,7 @@ resource "proxmox_virtual_environment_vm" "vms" {
     user_account {
       username = each.value.user
       password = each.value.password
+      keys      = [trimspace(tls_private_key.ubuntu_vm_key.public_key_openssh)]
     }
 
     ip_config {
@@ -62,4 +63,18 @@ resource "proxmox_virtual_environment_vm" "vms" {
       }
     }
   }
+}
+
+resource "tls_private_key" "ubuntu_vm_key" {
+  algorithm = "RSA"
+  rsa_bits  = 2048
+}
+
+output "ubuntu_vm_private_key" {
+  value     = tls_private_key.ubuntu_vm_key.private_key_pem
+  sensitive = true
+}
+
+output "ubuntu_vm_public_key" {
+  value = tls_private_key.ubuntu_vm_key.public_key_openssh
 }
