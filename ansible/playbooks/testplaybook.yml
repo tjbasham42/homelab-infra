@@ -1,10 +1,25 @@
 ---
  
-- hosts: all
+- hosts: 192.168.2.1
   become: true
   tasks:
  
-  - name: install apache2 package
+  - name: install docker prerequisites
     apt:
-      name: apache2
-      state: absent
+      update_cache: true
+      name: ca-certificates,curl
+  
+  - name: add keys
+    ansible.builtin.shell: |
+      sudo install -m 0755 -d /etc/apt/keyrings
+      sudo curl -fsSL https://download.docker.com/linux/ubuntu/gpg -o /etc/apt/keyrings/docker.asc
+      sudo chmod a+r /etc/apt/keyrings/docker.asc
+      echo \
+      "deb [arch=$(dpkg --print-architecture) signed-by=/etc/apt/keyrings/docker.asc] https://download.docker.com/linux/ubuntu \
+      $(. /etc/os-release && echo "${UBUNTU_CODENAME:-$VERSION_CODENAME}") stable" | \
+      sudo tee /etc/apt/sources.list.d/docker.list > /dev/null
+      sudo apt-get update
+
+  - name: install docker packages
+    apt:
+      name: docker-ce,docker-ce-cli,containerd.io,docker-buildx-plugin,docker-compose-plugin
