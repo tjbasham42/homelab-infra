@@ -60,6 +60,7 @@ resource "proxmox_virtual_environment_vm" "vms" {
     ip_config {
       ipv4 {
         address = each.value.ipv4conf
+        gateway = each.value.ipv4conf == "dhcp" ? null : "192.168.0.1"
       }
     }
   }
