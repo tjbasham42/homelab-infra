@@ -50,7 +50,7 @@ source "proxmox-iso" "ubuntu-server-noble-numbat-docker" {
     scsi_controller = "virtio-scsi-pci"
 
     disks {
-        disk_size = "20G"
+        disk_size = "10G"
         format = "raw"
         storage_pool = "local-lvm"
         type = "virtio"
