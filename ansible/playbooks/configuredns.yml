@@ -1,0 +1,66 @@
+---
+- name: Copy files to a specific host
+  hosts: 192.168.2.1
+  become: yes  # Remove this if you don't need sudo
+  vars:
+    files_to_copy:
+      - src: ../files/bind9/docker-compose.yml
+        dest: /home/user/docker-compose.yml
+      - src: ../files/bind9/named.conf
+        dest: /home/user/config/named.conf
+      - src: ../files/bind9/odnops.com.zone
+        dest: /home/user/config/odnops.com.zone
+
+  tasks:
+    - name: Ensure destination directory exists
+      ansible.builtin.file:
+        path: "{{ item.dest | dirname }}"
+        state: directory
+        mode: '0755'
+      loop: "{{ files_to_copy }}"
+      loop_control:
+        label: "{{ item.dest }}"
+
+    - name: Copy files to remote host
+      ansible.builtin.copy:
+        src: "{{ item.src }}"
+        dest: "{{ item.dest }}"
+        mode: '0644'
+      loop: "{{ files_to_copy }}"
+      loop_control:
+        label: "{{ item.src }}"
+
+    - name: create cache
+      ansible.builtin.file:
+        path: /home/user/cache
+        state: directory
+        mode: '0755'
+
+    - name: create records
+      ansible.builtin.file:
+        path: /home/user/records
+        state: directory
+        mode: '0755'
+
+    - name: Ensure DNSStubListener is set to no
+      ansible.builtin.lineinfile:
+        path: /etc/systemd/resolved.conf
+        regexp: '^#?DNSStubListener=.*'
+        line: 'DNSStubListener=no'
+        state: present
+        backup: yes  # optional: creates a backup before editing
+      become: true
+
+    - name: Restart systemd-resolved service
+      ansible.builtin.systemd:
+        name: systemd-resolved
+        state: restarted
+        enabled: true
+    
+    - name: Start Docker containers with docker-compose
+      ansible.builtin.command: docker-compose up -d
+      args:
+        chdir: /home/user  # Path where your docker-compose.yml is
+      become: true
+
+
