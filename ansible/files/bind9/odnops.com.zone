@@ -1,0 +1,18 @@
+$TTL 2d
+
+$ORIGIN odnops.com.
+
+@               IN      SOA     ns.odnops.com.  info.odnops.com. (
+                                20250816 
+                                12h
+                                15m
+                                3w
+                                2h
+)
+                IN      NS      ns.odnops.com.
+
+ns              IN      A       192.168.2.1
+
+; --- add DNS records here
+
+nuc01           IN      A       192.168.1.1
