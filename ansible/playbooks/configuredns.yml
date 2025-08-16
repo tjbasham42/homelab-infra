@@ -57,10 +57,12 @@
         state: restarted
         enabled: true
     
-    - name: Start Docker containers with docker-compose
-      ansible.builtin.command: docker-compose up -d
-      args:
-        chdir: /home/user  # Path where your docker-compose.yml is
+    - name: Deploy (and restart if already running) Docker containers via Docker Compose
+      community.docker.docker_compose:
+        project_src: /home/user    # directory containing docker-compose.yml
+        state: present
+        restarted: true            # <— forces a restart if already running
       become: true
+
 
 
