@@ -36,8 +36,22 @@ vm_configs = {
     cores     = 2
     bridge    = "vmbr0"
     nic_model = "virtio"
-    ipv4conf  = "192.168.2.1/16"
+    ipv4conf  = "192.168.2.2/16"
     user      = "ansibleusr"
     password  = "changeme"
   }
+
+    "dockerdns" = {
+    name      = "dockerdns"
+    node      = "nuc01"
+    started   = true
+    clone_id  = 200
+    memory    = 1024
+    cores     = 2
+    bridge    = "vmbr0"
+    nic_model = "virtio"
+    ipv4conf  = "192.168.2.1/16"
+    user      = "ansibleusr"
+    password  = "changeme"
+    }
 }
