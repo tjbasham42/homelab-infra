@@ -52,6 +52,11 @@ variable "ansiblekey_pub" {
   type        = string
 }
 
+variable "tsig_key" {
+  type        = string
+  sensitive   = true
+}
+
 variable "vm_configs" {
   type = map(object({
     name       = string

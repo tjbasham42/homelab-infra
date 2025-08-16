@@ -8,6 +8,8 @@
         dest: /home/user/docker-compose.yml
       - src: ../files/bind9/named.conf
         dest: /home/user/config/named.conf
+      - src: ../files/bind9/named.conf.key
+        dest: /home/user/config/named.conf.key
       - src: ../files/bind9/odnops.com.zone
         dest: /home/user/config/odnops.com.zone
 

@@ -4,6 +4,19 @@ terraform {
       source = "bpg/proxmox"
       version = "0.80.0"
     }
+    dns = {
+      source = "hashicorp/dns"
+      version = "3.4.3"
+    }
+  }
+}
+
+provider "dns" {
+  update {
+    server        = "192.168.2.1"
+    key_name      = "tsig-key."
+    key_algorithm = "hmac-sha256"
+    key_secret    = var.tsig_key
   }
 }
 
@@ -70,6 +83,23 @@ resource "tls_private_key" "ubuntu_vm_key" {
   algorithm = "RSA"
   rsa_bits  = 2048
 }
+
+resource "dns_a_record_set" "host_records" {
+  for_each  = proxmox_virtual_environment_vm.vms
+
+  zone      = "odnops.com."
+  name      = each.value.name
+  addresses = [
+    each.value.ipv4_addresses[1][0]
+  ]
+  ttl       = 300
+
+  depends_on = [
+    proxmox_virtual_environment_vm.vms
+  ]
+}
+
+
 
 output "ubuntu_vm_private_key" {
   value     = tls_private_key.ubuntu_vm_key.private_key_pem
