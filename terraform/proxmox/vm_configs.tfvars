@@ -54,4 +54,18 @@ vm_configs = {
     user      = "ansibleusr"
     password  = "changeme"
     }
+
+    "vault" = {
+    name      = "vault"
+    node      = "nuc01"
+    started   = true
+    clone_id  = 199
+    memory    = 1024
+    cores     = 2
+    bridge    = "vmbr0"
+    nic_model = "virtio"
+    ipv4conf  = "192.168.2.2/16"
+    user      = "ansibleusr"
+    password  = "changeme"
+    }
 }
