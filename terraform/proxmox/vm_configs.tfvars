@@ -36,7 +36,7 @@ vm_configs = {
     cores     = 2
     bridge    = "vmbr0"
     nic_model = "virtio"
-    ipv4conf  = "192.168.2.2/16"
+    ipv4conf  = "dhcp"
     user      = "ansibleusr"
     password  = "changeme"
   }

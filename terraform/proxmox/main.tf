@@ -70,6 +70,10 @@ resource "proxmox_virtual_environment_vm" "vms" {
       keys      = [trimspace(tls_private_key.ubuntu_vm_key.public_key_openssh)]
     }
 
+    dns {
+      domain = "odnops.com"
+      servers = ["192.168.2.1","192.168.0.1"]
+    }
     ip_config {
       ipv4 {
         address = each.value.ipv4conf
