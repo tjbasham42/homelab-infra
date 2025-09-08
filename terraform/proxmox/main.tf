@@ -103,7 +103,12 @@ resource "dns_a_record_set" "host_records" {
   ]
 }
 
-
+resource "dns_cname_record" "traefik_dashboard" {
+  zone = "odnops.com."
+  name = "traefik-dashboard"
+  cname = "dockertraefik.odnops.com."
+  ttl = 300
+}
 
 output "ubuntu_vm_private_key" {
   value     = tls_private_key.ubuntu_vm_key.private_key_pem

@@ -1,0 +1,49 @@
+- name: Copy files to a specific host
+  hosts: dockertraefik.odnops.com
+  become: yes  # Remove this if you don't need sudo
+  vars:
+    files_to_copy:
+      - src: ../files/traefik/docker-compose.yml
+        dest: /home/user/docker-compose.yml
+      - src: ../files/traefik/data/acme.json
+        dest: /home/user/data/acme.json
+      - src: ../files/traefik/data/traefik.yml
+        dest: /home/user/data/traefik.yml
+      - src: ../files/traefik/cf_api_token.key
+        dest: /home/user/cf_api_token.key
+      - src: ../files/traefik/.env
+        dest: /home/user/.env
+
+  tasks:
+    - name: Ensure destination directory exists
+      ansible.builtin.file:
+        path: "{{ item.dest | dirname }}"
+        state: directory
+        mode: '0755'
+      loop: "{{ files_to_copy }}"
+      loop_control:
+        label: "{{ item.dest }}"
+
+    - name: Copy files to remote host
+      ansible.builtin.copy:
+        src: "{{ item.src }}"
+        dest: "{{ item.dest }}"
+        mode: '0644'
+      loop: "{{ files_to_copy }}"
+      loop_control:
+        label: "{{ item.src }}"
+
+    - name: Fix perms for acme.json
+      ansible.builtin.shell: |
+        chmod 600 /home/user/data/acme.json
+
+    - name: create docker proxy network
+      community.docker.docker_network:
+        name: proxy
+        state: present
+    
+    - name: restart docker containers
+      community.docker.docker_compose_v2:
+        project_src: /home/user/
+        state: present
+        recreate: always
