@@ -5,10 +5,13 @@
     files_to_copy:
       - src: ../files/traefik/docker-compose.yml
         dest: /home/user/docker-compose.yml
-      - src: ../files/traefik/data/acme.json
-        dest: /home/user/data/acme.json
+      # TODO make this a conditional file creation
+      #- src: ../files/traefik/data/acme.json
+      #  dest: /home/user/data/acme.json
       - src: ../files/traefik/data/traefik.yml
         dest: /home/user/data/traefik.yml
+      - src: ../files/traefik/data/config.yml
+        dest: /home/user/data/config.yml
       - src: ../files/traefik/cf_api_token.key
         dest: /home/user/cf_api_token.key
       - src: ../files/traefik/.env
@@ -42,7 +45,7 @@
         name: proxy
         state: present
     
-    - name: restart docker containers
+    - name: start docker containers
       community.docker.docker_compose_v2:
         project_src: /home/user/
         state: present
