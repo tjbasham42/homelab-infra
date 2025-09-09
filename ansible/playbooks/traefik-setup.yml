@@ -1,13 +1,10 @@
-- name: Copy files to a specific host
+- name: traefik setup
   hosts: dockertraefik.odnops.com
   become: yes  # Remove this if you don't need sudo
   vars:
     files_to_copy:
       - src: ../files/traefik/docker-compose.yml
         dest: /home/user/docker-compose.yml
-      # TODO make this a conditional file creation
-      #- src: ../files/traefik/data/acme.json
-      #  dest: /home/user/data/acme.json
       - src: ../files/traefik/data/traefik.yml
         dest: /home/user/data/traefik.yml
       - src: ../files/traefik/data/config.yml
@@ -36,9 +33,11 @@
       loop_control:
         label: "{{ item.src }}"
 
-    - name: Fix perms for acme.json
-      ansible.builtin.shell: |
-        chmod 600 /home/user/data/acme.json
+    - name: Ensure file exists with correct permissions
+      ansible.builtin.file:
+        path: /home/user/data/acme.json
+        state: file
+        mode: "600"
 
     - name: create docker proxy network
       community.docker.docker_network:
