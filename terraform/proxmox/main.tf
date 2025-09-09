@@ -117,6 +117,13 @@ resource "dns_cname_record" "mario_record" {
   ttl = 300
 }
 
+resource "dns_cname_record" "authentik_record" {
+  zone = "odnops.com."
+  name = "authentik"
+  cname = "dockertraefik.odnops.com."
+  ttl = 300
+}
+
 output "ubuntu_vm_private_key" {
   value     = tls_private_key.ubuntu_vm_key.private_key_pem
   sensitive = true
