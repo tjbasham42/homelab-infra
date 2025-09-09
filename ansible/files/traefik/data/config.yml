@@ -10,7 +10,15 @@ http:
         - https-redirectscheme
       tls: {}
       service: mario
-    pihole:
+    authentik:
+      entryPoints:
+        - "https"
+      rule: "Host(`authentik.odnops.com`)"
+      middlewares:
+        - default-headers
+        - https-redirectscheme
+      tls: {}
+      service: authentik
   
 #endregion
 #region services
@@ -19,6 +27,13 @@ http:
       loadBalancer:
         servers:
           - url: "http://docker01.odnops.com:8600"
+        passHostHeader: true
+        serversTransport: SkipverifyTransport
+    
+    authentik:
+      loadBalancer:
+        servers:
+          - url: "http://dockerauthentik.odnops.com:9000"
         passHostHeader: true
         serversTransport: SkipverifyTransport
   
