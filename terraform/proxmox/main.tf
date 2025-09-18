@@ -124,6 +124,13 @@ resource "dns_cname_record" "authentik_record" {
   ttl = 300
 }
 
+resource "dns_cname_record" "komanga_record" {
+  zone = "odnops.com."
+  name = "komanga"
+  cname = "dockertraefik.odnops.com."
+  ttl = 300
+}
+
 output "ubuntu_vm_private_key" {
   value     = tls_private_key.ubuntu_vm_key.private_key_pem
   sensitive = true

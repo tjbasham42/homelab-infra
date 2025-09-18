@@ -1,0 +1,17 @@
+spring:
+    security:
+        oauth2:
+            client:
+                registration:
+                    authentik:
+                        provider: authentik
+                        client-id: Lw8HusjVSwLnn1WLt32Nk7qrZIquLQY70ensRrNT
+                        client-secret: kdrn2LirjII0p0mhzxBUKLaTsnsHwWiqTiMWG8B0C8vDmUVsKQulc0TOs9a1xztbkH0G8vPdJMEoZxPYlFJ6tuMgIpxIMmlkuJJ7uadjuATE7VxbUJ4VlDI8yBHWjqkf
+                        client-name: authentik
+                        scope: openid,email,profile
+                        authorization-grant-type: authorization_code
+                        redirect-uri: "{baseUrl}/{action}/oauth2/code/{registrationId}"
+                provider:
+                    authentik:
+                        user-name-attribute: preferred_username
+                        issuer-uri: https://authentik.odnops.com/application/o/komanga/

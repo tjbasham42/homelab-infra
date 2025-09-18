@@ -1,0 +1,20 @@
+---
+services:
+  komga:
+    image: gotson/komga
+    container_name: komga
+    volumes:
+      - type: bind
+        source: /home/user/config
+        target: /config
+      - type: bind
+        source: /mnt/shared/books
+        target: /data
+    ports:
+      - 25600:25600
+    user: "0:0"
+    # remove the whole environment section if you don't need it
+    environment:
+      - TZ=Europe/London
+      - KOMGA_OAUTH2ACCOUNTCREATION=true
+    restart: unless-stopped
