@@ -10,6 +10,7 @@ http:
         - https-redirectscheme
       tls: {}
       service: mario
+
     authentik:
       entryPoints:
         - "https"
@@ -19,6 +20,16 @@ http:
         - https-redirectscheme
       tls: {}
       service: authentik
+
+    komanga:
+      entryPoints:
+        - "https"
+      rule: "Host(`komanga.odnops.com`)"
+      middlewares:
+        - default-headers
+        - https-redirectscheme
+      tls: {}
+      service: komanga
   
 #endregion
 #region services
@@ -36,6 +47,13 @@ http:
           - url: "http://dockerauthentik.odnops.com:9000"
         passHostHeader: true
         serversTransport: SkipverifyTransport
+
+    komanga:
+      loadBalancer:
+        servers:
+          - url: "http://dockerkomanga.odnops.com:25600"
+        passHostHeader: true
+        serversTransport: SkipverifyTransport        
   
   serversTransports:
     SkipverifyTransport:

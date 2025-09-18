@@ -96,4 +96,18 @@ vm_configs = {
     user      = "ansibleusr"
     password  = "changeme"
     }
+
+    "dockerkomanga" = {
+    name      = "dockerkomanga"
+    node      = "nuc01"
+    started   = true
+    clone_id  = 200
+    memory    = 2048
+    cores     = 2
+    bridge    = "vmbr0"
+    nic_model = "virtio"
+    ipv4conf  = "dhcp"
+    user      = "ansibleusr"
+    password  = "changeme"
+    }
 }

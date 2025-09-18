@@ -1,0 +1,67 @@
+- name: komanga setup
+  hosts: dockerkomanga.odnops.com
+  become: yes  # Remove this if you don't need sudo
+  
+  vars:
+    files_to_copy:
+      - src: ../files/komanga/docker-compose.yml
+        dest: /home/user/docker-compose.yml
+      - src: ../files/komanga/config/application.yml
+        dest: /home/user/config/application.yml
+
+  tasks:
+    - name: Ensure destination directory exists
+      ansible.builtin.file:
+        path: "{{ item.dest | dirname }}"
+        state: directory
+        mode: '0755'
+      loop: "{{ files_to_copy }}"
+      loop_control:
+        label: "{{ item.dest }}"
+
+    - name: Copy files to remote host
+      ansible.builtin.copy:
+        src: "{{ item.src }}"
+        dest: "{{ item.dest }}"
+        mode: '0644'
+      loop: "{{ files_to_copy }}"
+      loop_control:
+        label: "{{ item.src }}"
+
+    - name: Install cifs-utils
+      apt:
+        name: cifs-utils
+        state: present
+
+    - name: Ensure /etc/samba directory exists
+      ansible.builtin.file:
+        path: /etc/samba
+        state: directory
+        owner: root
+        group: root
+        mode: '0755'
+
+    - name: Create Samba credentials file
+      ansible.builtin.copy:
+        dest: /etc/samba/creds
+        content: |
+          username=smbusr
+          password=Sangan#1
+        owner: root
+        group: root
+        mode: '0600'  
+        force: true
+
+    - name: Mount SMB share
+      ansible.builtin.mount:
+        src: "//truenas.odnops.com/smb"
+        path: "/mnt/shared"
+        fstype: cifs
+        opts: "credentials=/etc/samba/creds,iocharset=utf8,uid=0,gid=0,file_mode=0644,dir_mode=0755"
+        state: mounted
+
+    - name: start docker containers
+      community.docker.docker_compose_v2:
+        project_src: /home/user/
+        state: present
+        recreate: always
