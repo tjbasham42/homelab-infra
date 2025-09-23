@@ -30,6 +30,16 @@ http:
         - https-redirectscheme
       tls: {}
       service: komanga
+
+    immich:
+      entryPoints:
+        - "https"
+      rule: "Host(`immich.odnops.com`)"
+      middlewares:
+        - default-headers
+        - https-redirectscheme
+      tls: {}
+      service: immich
   
 #endregion
 #region services
@@ -54,6 +64,13 @@ http:
           - url: "http://dockerkomanga.odnops.com:25600"
         passHostHeader: true
         serversTransport: SkipverifyTransport        
+
+    immich:
+      loadBalancer:
+        servers:
+          - url: "http://dockerimmich.odnops.com:2283"
+        passHostHeader: true
+        serversTransport: SkipverifyTransport
   
   serversTransports:
     SkipverifyTransport:

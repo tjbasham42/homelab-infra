@@ -110,4 +110,18 @@ vm_configs = {
     user      = "ansibleusr"
     password  = "changeme"
     }
+  
+    "dockerimmich" = {
+    name      = "dockerimmich"
+    node      = "nuc01"
+    started   = true
+    clone_id  = 200
+    memory    = 6144
+    cores     = 4
+    bridge    = "vmbr0"
+    nic_model = "virtio"
+    ipv4conf  = "dhcp"
+    user      = "ansibleusr"
+    password  = "changeme"
+    }
 }
