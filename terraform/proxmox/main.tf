@@ -138,6 +138,38 @@ resource "dns_cname_record" "immich_record" {
   ttl = 300
 }
 
+resource "dns_a_record_set" "pve01_record" {
+  zone = "odnops.com."
+  name = "pve01"
+  addresses = ["192.168.1.3"]
+  ttl = 300
+}
+
+resource "dns_a_record_set" "pve02_record" {
+  zone = "odnops.com."
+  name = "pve02"
+  addresses = ["192.168.1.4"]
+  ttl = 300
+}
+
+resource "dns_a_record_set" "pve03_record" {
+  zone = "odnops.com."
+  name = "pve03"
+  addresses = ["192.168.1.5"]
+  ttl = 300
+}
+
+resource "dns_a_record_set" "pvc_record" {
+  zone = "odnops.com."
+  name = "pvc"
+  addresses = [
+    "192.168.1.3",
+    "192.168.1.4",
+    "192.168.1.5"
+    ]
+  ttl = 300
+}
+
 output "ubuntu_vm_private_key" {
   value     = tls_private_key.ubuntu_vm_key.private_key_pem
   sensitive = true
