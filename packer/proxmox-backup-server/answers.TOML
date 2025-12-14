@@ -1,0 +1,14 @@
+[global]
+keyboard = "en-us"
+country = "gb"
+fqdn = "pveauto.testinstall"
+mailto = "tjbasham42@gmail.com"
+timezone = "Europe/London"
+root-password-hashed = "$y$j9T$0QQjIoDVO3V4zyjwI5rpv0$y4TII2r8kx/wLUm37WTP39Nc.Pa41HEeS.gyI3yNw6A"
+
+[network]
+source = "from-dhcp"
+
+[disk-setup]
+filesystem = "ext4"
+disk-list = ["sda"]
