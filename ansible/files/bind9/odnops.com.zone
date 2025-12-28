@@ -17,3 +17,4 @@ ns              IN      A       192.168.2.1
 
 nuc01           IN      A       192.168.1.1
 truenas         IN      A       192.168.1.2
+tonyPhone       IN      A       192.168.5.220
